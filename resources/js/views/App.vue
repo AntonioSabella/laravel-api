@@ -1,15 +1,15 @@
 <template>
 
     <div>
-        <work-in-progress></work-in-progress>
-        <section class="posts">
+        <banner-component></banner-component>
+        <section class="posts py-5">
             <div class="container">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 gy-3">
                     <div class="col" v-for="post in postsResponse.data" :key="post.id">
                         <div class="product card">
-                            <img :src="'storage/' + post.cover_image" :alt="post.title">
+                            <img height="250" :src="'storage/' + post.cover_image" :alt="post.title">
                             <div class="card-body">
-                                <h3><strong>{{ post.title }}</strong></h3>
+                                <h5><strong>{{ post.title }}</strong></h5>
                                 <p><strong>{{ post.content }}</strong></p>
                             </div>
                             <div class="card-footer">
@@ -37,6 +37,30 @@
                         </div>
                     </div>
                 </div>
+            <div class="text-center py-4">
+                <nav aria-label="Page navigation">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item" v-if="postsResponse.current_page > 1">
+                      <a class="page-link" href="#" aria-label="Previous" @click.prevent="getPosts(postsResponse.current_page - 1)">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                    </li>
+
+                    <li :class="{ 'page-item': true, 'active': page == postsResponse.current_page }" v-for="page in postsResponse.last_page" :key="page.id">
+                        <a class="page-link" href="#" @click.prevent="getPosts(page)">{{page}}</a>
+                    </li>
+                    
+
+                    <li class="page-item" v-if="postsResponse.current_page < postsResponse.last_page">
+                      <a class="page-link" href="#" aria-label="Next" @click.prevent="getPosts(postsResponse.current_page + 1)">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+            </div>
             </div>
         </section>
     </div>
@@ -47,21 +71,25 @@
 
 
 <script>
-import WorkInProgress from '../components/WorkInProgress';
+import BannerComponent from '../components/BannerComponent';
 export default {
     name: 'App',
-    components: { WorkInProgress },
+    components: { BannerComponent },
     data() {
         return {
-            posts:'',
+          
             postsResponse: ''
         }
     },
     methods: {
-        getAllPosts() {
-            axios.get('/api/posts').then((response) => {
+        getPosts(postPage) {
+            axios.get('/api/posts', {
+                params: {
+                    page: postPage
+                }
+            }).then((response) => {
             //console.log(response);
-            this.posts = response.data.data
+           
             this.postsResponse = response.data
         }).catch(e => {
             console.error(e);
@@ -70,7 +98,27 @@ export default {
     },
     mounted() {
         //console.log('mounted');
-        this.getAllPosts()
+        this.getPosts(1)
     }
 }
 </script>
+
+<style lang="scss" scoped>
+
+.posts{
+    .card-body {
+        h5 {
+            height: 50px;
+        }
+        p {
+            height: 60px;
+            overflow-y: auto;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+    }
+}
+
+
+</style>
