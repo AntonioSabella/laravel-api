@@ -5147,11 +5147,75 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   components: {
     WorkInProgress: _components_WorkInProgress__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      posts: '',
+      postsResponse: ''
+    };
+  },
+  methods: {
+    getAllPosts: function getAllPosts() {
+      var _this = this;
+
+      axios.get('/api/posts').then(function (response) {
+        //console.log(response);
+        _this.posts = response.data.data;
+        _this.postsResponse = response.data;
+      })["catch"](function (e) {
+        console.error(e);
+      });
+    }
+  },
+  mounted: function mounted() {
+    //console.log('mounted');
+    this.getAllPosts();
   }
 });
 
@@ -41467,9 +41531,92 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("work-in-progress")
+  return _c(
+    "div",
+    [
+      _c("work-in-progress"),
+      _vm._v(" "),
+      _c("section", { staticClass: "posts" }, [
+        _c("div", { staticClass: "container" }, [
+          _c(
+            "div",
+            { staticClass: "row row-cols-1 row-cols-sm-2 row-cols-md-3" },
+            _vm._l(_vm.postsResponse.data, function (post) {
+              return _c("div", { key: post.id, staticClass: "col" }, [
+                _c("div", { staticClass: "product card" }, [
+                  _c("img", {
+                    attrs: {
+                      src: "storage/" + post.cover_image,
+                      alt: post.title,
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("h3", [_c("strong", [_vm._v(_vm._s(post.title))])]),
+                    _vm._v(" "),
+                    _c("p", [_c("strong", [_vm._v(_vm._s(post.content))])]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-footer" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _vm._m(0, true),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col" }, [
+                        post.category
+                          ? _c("span", [
+                              _c("strong", [_vm._v("Category:")]),
+                              _vm._v(_vm._s(post.category.name)),
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        post.tags.length > 0
+                          ? _c(
+                              "div",
+                              { staticClass: "tags" },
+                              [
+                                _c("strong", [_vm._v("Tags:")]),
+                                _vm._v(" "),
+                                _vm._l(post.tags, function (tag) {
+                                  return _c("span", { key: tag.id }, [
+                                    _vm._v(
+                                      "\n                                      #" +
+                                        _vm._s(tag.name) +
+                                        "\n                                      "
+                                    ),
+                                  ])
+                                }),
+                              ],
+                              2
+                            )
+                          : _vm._e(),
+                      ]),
+                    ]),
+                  ]),
+                ]),
+              ])
+            }),
+            0
+          ),
+        ]),
+      ]),
+    ],
+    1
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col" }, [
+      _c("div", { staticClass: "author" }, [
+        _c("h4", [_vm._v("Author:")]),
+        _vm._v(" "),
+        _c("p", [_vm._v(" L'autore al momento non c'è")]),
+      ]),
+    ])
+  },
+]
 render._withStripped = true
 
 
@@ -53911,7 +54058,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\MAMP\htdocs\laravel\laravel-many-to-many\resources\js\front.js */"./resources/js/front.js");
+module.exports = __webpack_require__(/*! C:\MAMP\htdocs\laravel\laravel-api\resources\js\front.js */"./resources/js/front.js");
 
 
 /***/ })
